@@ -11,8 +11,6 @@
 #include <cctype>
 #include <QMessageBox>
 
-constexpr char MainWindow::smPoseLetters[];
-
 MainWindow::MainWindow(QWidget *parent) :
 QMainWindow(parent),
 current_pose(0L),

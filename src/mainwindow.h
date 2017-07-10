@@ -11,11 +11,11 @@ class QComboBox;
 class QCheckBox;
 class QSlider;
 
+static constexpr char smPoseLetters[] = "IX0123456789?!";
+
 class MainWindow : public QMainWindow
 {
-	Q_OBJECT
-
-	static constexpr char smPoseLetters[] = "IX0123456789?!";
+    Q_OBJECT
 
 	QToolButton * m_tools[bp_poseLength][sizeof(smPoseLetters)-1];
 	QComboBox * m_poses[POSES_PER_GAIT];
