@@ -1,0 +1,1948 @@
+//this is a line comment
+
+/* this is a 
+multi-line 
+comment */
+
+/+ 
+   /+
+      this is a nested multi-line comment
+   +/
++/
+
+/* everything is converted to lowercase before the file is read */
+
+gene "norn" : genus {
+/*
+	mating requires the same species, in this case norn
+	if mating/splicing occurs and the creatures have different number of chromosomes, 
+	or not all chromosomes can pair up (aside from A-A, X pairs with X or Y, W with W or Z)
+	it's a logic error and the mating fails. 
+*/
+	moniker = "0000-0000-0000-0000",
+	mother  = "0000-0000-0000-0EVE",
+	father  = "0000-0000-0000-ADAM"
+
+//mating also fails if moniker signifies a sibling (aside from hatchery eggs).
+}
+
+/* general format:
+ gene [16 character string, typically signifies lobe or organ] : [gene type] { [gene fields] }
+ if the string is longer than 16 characters it is truncated.
+ lobe names are truncated further, to 8 characters
+*/
+
+/+
+    "this is a string"
+    `this is a string`
+    'this is a string'
+    `this is a syntax error'
+
+	'i\'m asleep' is same as "i'm asleep", hence different kinds of quote marks.
+
+	most keywords are same regardless of quotes:
+	gain is same as "gain"
+	unless they have spaces:
+	"sample rate" is a keyword; sample rate is a syntax error.
+	
+	keywords are looked up in catalogue language files to find the matching token this does not apply to the following symbols:
+		* string 
+		* true
+		* false
+		* override 
+		* translate  
+	Because these are used in loading the catalogue, they are not considered keywords at all, and so can't be used as field names.
+	
+	true is read as 1 rather than the word true
+	false is read as 0 rather than the word false
++/
+/+
+chromosome : 'X' {
+//hatchery eggs are haploid, creatures are diploid 
+
+	gene 'uterus' : organ
+	{
+	/* numbers are from [0-255], or [0.0 to 1.0], if the latter it is multiplied by 255 */
+		'clock rate'		= 128,
+		vulnerability 	= 0,
+		'life force start' = .5, 
+		'biotick start'	= 50,
+		'atp damage coeff'	= .5,
+	}
+	
+	@switch_on_stage(Youth)
+	gene 'gonad' : emitter
+	{
+		locus = { 'reproductive', 'fertile' },
+		chemical = 'arousal potential',
+		'sample rate' = 3,
+		gain = .059,
+		threshold = 128,
+		digital = true
+	} 
+
+//no switch on stage is same as @switch_on_stage(Embryo)
+	@switch_on_stage(Youth)
+	gene 'uterus' : emitter
+	{
+		locus = { 'reproductive', 'pregnant' },
+		chemical = comfort,
+		'sample rate' = 10,
+		gain = 255,
+		threshold = 1,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)
+	gene 'uterus' : emitter
+	{
+		locus = { 'reproductive', 'pregnant' },
+		chemical = progesterone,
+		'sample rate' = 1,
+		gain = .012,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)
+	gene 'gonad' : emitter
+	{
+		locus = { 'reproductive', 'fertile' },
+		chemical = oestrogen,
+		'sample rate' = 3,
+		gain = .08,
+		threshold = 62,
+		digital = true,
+		invert = true
+	}
+
+}
+
+chromosome : 'Y' {
+	@switch_on_stage(Youth)
+	gene 'gonad' : emitter
+	{
+		locus = { 'reproductive', 'fertile' },
+		chemical = testosterone,
+		'sample rate' = 4,
+		gain = .02,
+		threshold = 128,
+		digital = true,
+		invert = true
+	}
+
+}
+
+chromosome : 'E' {
+/* crossover algorithm during mating:
+   in each parent:
+   		for each matching pair of chromosomes:
+   			chrm1 := chromsome 1
+   			chrm2 := chromsome 2
+   			
+   			N := 0
+   			
+   			while(true)
+   			    R := 32 + random[0, 16) + random[0, 16);
+   			    
+   			    gamete chromosome <- genes from N to N+R of chrm1;
+   			    N := N+R
+   			    
+   				if N > genes in chrm 1
+   				    return
+   				
+   				swap(chrm1, chrm2)
+   				
+   				error := random[0, 1000)
+   				do			
+   				    if error is 0
+   				       N := N - 1
+   				    else if error is 1
+   				       N := N + 1
+   				    else
+   				       break
+   				       
+   				    error := random[0, 100)
+   				while(true)
+   				      
+   			
+ 
+     ergo, to prevent a gene being lost during crossover, due to not matching up perfectly, etc duplication/cutting mutation, ensure that it is in the first 16 genes.
+     the chromosomes should prevent bugs like the slider by breaking down the genes into more manageable parts.
+*/
+
+
+
+	gene 'floating' : emitter
+	{
+	//locus must come first (because the code is also used in other places)
+		locus = { 'circulatory', 4 },
+	//chemical must come second
+		chemical = Adrenaline,
+	//the rest are in no particular order
+		'sample rate' = 17,
+		gain = 8,
+		threshold = 128,
+/+ this is a flag, if a flag is absent it is considered false +/
+		digital = true	
+/+ flags can be written:
+		flag = true,
+		flag = 1,
+		flag(true),
+		flag(1),
+		
+		<nothing>,
+		flag(false),
+		flag(0),
+		flag = false,
+		flag = 0 +/
+	}
+	  
+//CAs not implemented yet
+	gene 'floating' : emitter
+	{
+		locus = { 'creature', 'sensorimotor', 'always active' },
+		chemical = Air,
+		'sample rate' = 20,
+		gain = .22,
+		threshold = 0
+	} 
+
+	gene 'muscles' : emitter
+	{
+		locus = { 'creature', 'muscle energy used' },
+		chemical = 'anabolic steroid',
+		'sample rate' = 30,
+		gain = .05,
+		threshold = 0
+	} 
+
+	gene 'regulation' : emitter
+	{
+		locus = { 'creature', 'sensorimotor', 'always active' },
+		chemical = boredom,
+		'sample rate' = 8,
+		gain = 1,
+		threshold = 128,
+		digital = true
+	}
+	
+	gene 'floating' : emitter
+	{
+		locus = { creature, sensorimotor, crowdedness },
+		chemical = crowded,
+		'sample rate' = 7,
+		gain = .04,
+		threshold = 26
+	}
+	
+	gene 'floating' : emitter
+	{
+		locus = { creature, sensorimotor, 'slope sine (neg)' },
+		chemical = downatrophin,
+		'sample rate' = 2,
+		gain = 255,
+		threshold = .184,
+		digital = true
+	}
+	
+	gene 'floating' : emitter
+	{
+		locus = { creature, sensorimotor, 'slope sine (pos)' },
+		chemical = upatrophin,
+		'sample rate' = 2,
+		gain = 255,
+		threshold = .184,
+		digital = true
+	}
+	
+	gene 'regulation' : emitter
+	{
+		locus = { creature, sensorimotor, 'always active' },
+		chemical = 'hunger for carbohydrate',
+		'sample rate' = 35,
+		gain = .08,
+		threshold = 0.0
+	}
+	
+	gene 'regulation' : emitter
+	{
+		locus = { creature, sensorimotor, 'always active' },
+		chemical = 'hunger for fat',
+		'sample rate' = 30,
+		gain = .08,
+		threshold = 0.0
+	}
+	
+	gene 'regulation' : emitter
+	{
+		locus = { creature, sensorimotor, 'always active' },
+		chemical = 'hunger for protein',
+		'sample rate' = 30,
+		gain = .08,
+		threshold = 0.0
+	}
+	
+	gene 'regulation' : emitter
+	{
+		locus = { creature, circulatory, 8 },
+		chemical = 'hunger for protein',
+		'sample rate' = 12,
+		gain = .08,
+		threshold = 128,
+		digital = true
+	}
+	
+	gene 'gonad' : emitter
+	{
+		locus = { creature, reproductive, 'I am Fertile (egg/sperm ready)' },
+		chemical = 'libido lowerer',
+		'sample rate' = 2,
+		gain = .047,
+		threshold = 128,
+		invert = true
+	}
+	
+	gene 'loneliness' : emitter
+	{
+		locus = { creature, sensorimotor, 'crowdedness' },
+		chemical = 'loneliness',
+		'sample rate' = 10,
+		gain = .04,
+		threshold = .89,
+		digital = true,
+		invert = true
+	}
+	
+	gene 'floating' : emitter
+	{
+		locus = { creature, circulatory, 1 },
+		chemical = 'loneliness',
+		'sample rate' = 1,
+		gain = 255,
+		threshold = 128,
+		digital = true
+	}
+	
+	
+	gene 'floating' : emitter
+	{
+		locus = { creature, circulatory, 1 },
+		chemical = 'loneliness',
+		'sample rate' = 1,
+		gain = 255,
+		threshold = 128,
+		digital = true
+	}
+	
+	gene 'floating' : emitter
+	{
+		locus = { creature, circulatory, 2 },
+		chemical = 'protease',
+		'sample rate' = 9,
+		gain = .08,
+		threshold = 128,
+		digital = true,
+		invert = true
+	}	
+	gene 'floating' : emitter
+	{
+		locus = { creature, circulatory, 0 },
+		chemical = 'protease',
+		'sample rate' = 5,
+		gain = .032,
+		threshold = 128,
+		digital = true
+	}
+	/*
+	
+	gene 'situ' : neuroemitter
+	{
+		locus = { 5, output },
+		chemical = sleepase,
+		'sample rate' = 4,
+		gain = .055,
+		threshold = 0,
+		digital = true
+	}
+	
+	gene 'dcsn' : neuroemitter
+	{
+		locus = { 10, output },
+		chemical = sleepase,
+		'sample rate' = 4,
+		gain = .263,
+		threshold = 0,
+		digital = true
+	}
+	*/
+	
+	gene 'floating' : emitter
+	{
+		locus = { creature, sensorimotor, Asleep },
+		chemical = sleepase,
+		'sample rate' = 3,
+		gain = .302,
+		threshold = 0,
+		digital = true
+	}
+	
+	gene 'regulation' : emitter
+	{
+		locus = { creature, sensorimotor, Asleep },
+		chemical = sleepase,
+		'sample rate' = 35,
+		gain = .016,
+		threshold = 0,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 13 },
+		chemical = "stress (anger)",
+		'sample rate' = 14,
+		gain = .024,
+		threshold = 128,
+		digital = true
+	}	
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 10 },
+		chemical = "stress (crowded)",
+		'sample rate' = 14,
+		gain = .024,
+		threshold = 128,
+		digital = true
+	}	
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 11 },
+		chemical = "stress (fear)",
+		'sample rate' = 14,
+		gain = .024,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 5 },
+		chemical = "stress (H4C)",
+		'sample rate' = 14,
+		gain = .024,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 6 },
+		chemical = "stress (H4P)",
+		'sample rate' = 14,
+		gain = .024,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 7 },
+		chemical = "stress (H4F)",
+		'sample rate' = 14,
+		gain = .024,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 12 },
+		chemical = "stress (Pain)",
+		'sample rate' = 14,
+		gain = .024,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 9 },
+		chemical = "stress (Sleep)",
+		'sample rate' = 14,
+		gain = .024,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 10 },
+		chemical = "stress (Tired)",
+		'sample rate' = 14,
+		gain = .024,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 22 },
+		chemical = "stress",
+		'sample rate' = 24,
+		gain = .02,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 21 },
+		chemical = "stress",
+		'sample rate' = 24,
+		gain = .02,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 20 },
+		chemical = "stress",
+		'sample rate' = 24,
+		gain = .02,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 19 },
+		chemical = "stress",
+		'sample rate' = 24,
+		gain = .02,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 18 },
+		chemical = "stress",
+		'sample rate' = 24,
+		gain = .02,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 17 },
+		chemical = "stress",
+		'sample rate' = 24,
+		gain = .02,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 16 },
+		chemical = "stress",
+		'sample rate' = 24,
+		gain = .02,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 15 },
+		chemical = "stress",
+		'sample rate' = 24,
+		gain = .02,
+		threshold = 128,
+		digital = true
+	}
+	
+	@switch_on_stage(Youth)	
+	gene 'stress' : emitter 
+	{
+		locus = { creature, circulatory, 14 },
+		chemical = "stress",
+		'sample rate' = 24,
+		gain = .02,
+		threshold = 128,
+		digital = true
+	}
+}// +/
+
+chromosome : 'G' {
+	gene 'Normal' : gait {
+		pose = {
+			'Normal 1',
+			'Normal 2',
+			'Normal 3',
+			'Normal 4'
+		}
+	}
+	gene 'Pained' : gait {
+		pose = {
+			'Pained 1',
+			'Pained 2',
+			'Pained 3',
+			'Pained 4'
+		},
+		beat = .25
+	}
+	gene 'Tired' : gait {
+		pose = {
+			'Tired 1',
+			'Tired 2',
+			'Tired 3',
+			'Tired 4'
+		}
+	}
+	gene 'Sleepy' : gait {
+		pose = {
+			'Tired 1',
+			'Tired 2',
+			'Tired 3',
+			'Tired 4'
+		},
+//play at 1/2 speed of a normal gait (interpolates better than doubling the frames)
+		beat = .25
+	}
+	gene 'Scared' : gait {
+		pose = {
+			'Scared 1',
+			'Scared 2',
+			'Scared 3',
+			'Scared 4'
+		}
+	}
+	gene 'Anger' : gait {
+		pose = {
+			'Anger 1',
+			'Anger 2'
+		},
+/+ swap the left and right pose data on odd repetitions +/
+		invert
+	}
+	
+	gene 'Limp' : gait {
+		pose = {
+			'Limp 1',
+			'Limp 2',
+			'Limp 3',
+			'Limp 4'
+		}
+	}
+	gene 'Stagger' : gait {
+		pose = {
+			'Stagger 1',
+			'Stagger 1',
+			'Stagger 2',
+			'Stagger 3',
+			'Stagger 1',
+			'Stagger 4',
+			'Stagger 2',
+			'Stagger 3'
+		}
+	}
+	gene 'Downhill' : gait {
+		pose = {
+			'Downhill 1',
+			'Downhill 2',
+			'Downhill 3',
+			'Downhill 4'
+		}
+	}
+	gene 'Retreat' : gait {
+		pose = {
+			'Retreat 1',
+			'Retreat 2',
+			'Retreat 3',
+			'Retreat 4'
+		}
+	}
+	gene 'Uphill' : gait {
+		pose = {
+			'Uphill 1',
+			'Uphill 2',
+			'Uphill 3',
+			'Uphill 4'
+		}
+	}
+	gene 'Bored' : gait {
+		pose = {
+			'Bored 1',
+			'Bored 2',
+			'Bored 3',
+			'Bored 4'
+		}
+	}
+	gene 'Running' : gait {
+		pose = {
+			'Running 1',
+			'Running 2',
+			'Running 3',
+			'Running 4'
+		}
+	}
+	gene 'Sexy': gait {
+		pose = {
+			'Sexy 1',
+			'Sexy 2',
+			'Sexy 3',
+			'Sexy 4'
+		}
+	}
+	gene 'Dance' : gait {
+		pose = {
+			'Normal 1',
+			'Normal 2',
+			'Normal 3',
+			'Normal 4',
+			'Toe Tap 1',
+			'Toe Tap 2',
+			'Toe Tap 1',
+			'Toe Tap 2'
+		}
+	}
+	gene 'Dance' : gait {
+		pose = {
+			'Normal 1',
+			'Normal 2',
+			'Normal 3',
+			'Normal 4',
+			'Swing Arms 1',
+			'Swing Arms 2',
+			'Toe Tap 1',
+			'Toe Tap 2'
+		}
+	}
+} // +/
+
+chromosome : 'P' {
+/* Pose genes are strings, underscores and spaces are removed before the gene is used, so these characters do nothing.
+  X - signifies usage of the previous frame
+  R - random number, 1 different from the previous position
+  I - signifies an interpolation e.g.
+  pose 1 = '1....'
+  pose 2 = 'i....' //i is 1.5
+  pose 3 = '2....' 
+  
+  numbers are between 0 and 9, part rotation (in degrees) is:
+  (first number in body data line) + (pose number [0-9]) / 9.0 * (second number in body data line) 
+  
+ */
+  
+	gene 'Reach Low Near' : pose { '??3_199_199_35_35_00' }
+	gene 'Reach Lowish Near' : pose { '??6_399_399_16_16_00' }
+	gene 'Reach Highish Near' : pose { '??6_399_399_93_34_XX' }
+	gene 'Reach High Near' : pose { '??6_390_390_93_34_XX' }
+	
+	gene 'Reach Low Medium' : pose { '??3_369_369_43_52_XX' }
+	gene 'Reach Lowish Medium' : pose { '??3_569_569_43_54_XX' }
+	gene 'Reach Highish Medium' : pose { '??6_569_565_36_75_XX' }
+	gene 'Reach High Medium' : pose { '??6_560_560_36_93_XX' }
+	
+	gene 'Reach Low Far' : pose { '??3_369_369_43_52_XX' }
+	gene 'Reach Lowish Far' : pose { '??3_569_569_43_54_XX' }
+	gene 'Reach Highish Far' : pose { '??3_569_569_43_54_XX' }
+	gene 'Reach High Far' : pose { '??3_569_569_43_54_XX' } 
+	
+	
+	gene 'Stand' : pose { '??6_366_363_33_03_00' }
+	
+	gene 'Slap Norn 1' : pose { '?36_666_666_03_66_60' }
+	gene 'Rest' : pose { '??0_099_099_55_55_00' }	
+	gene 'Sleep' : pose { 'X00_906_906_06_36_XX' }	
+	gene 'East' : pose { '1?6_365_365_06_06_XX' }	
+	gene 'West' : pose { '2?6_365_365_06_06_XX' }
+	gene 'Startled' : pose { '?39_003_963_03_39_90' }	
+	gene 'Kiss' : pose { '?66_330_330_66_66_XX' }	
+	gene 'Dead' : pose { '?!0_900_900_06_06_00' }
+	
+	gene 'To Camera' : pose { '146_366_366_33_33_XX' }
+	
+	gene 'Express General Need' : pose { '136_366_903_33_00_XX' }
+	gene 'Express Pain' : pose { '106_636_636_69_69_XX' }
+	gene 'Express Hunger' : pose { '140_636_636_06_06_XX' }
+	gene 'Express Tired' : pose { '143_636_636_33_33_XX' }
+	gene 'Express Lonely' : pose { '246_666_333_66_69_00' }
+	gene 'Express Fear' : pose { '146_636_636_69_69_XX' }
+	/+
+	gene 'Normal 1' : pose { '?90_066_003_90_66_00' }
+	gene 'Normal 2' : pose { '?90_003_466_63_93_93' }
+	gene 'Normal 3' : pose { '?90_003_066_66_90_03' }
+	gene 'Normal 4' : pose { '?90_466_003_93_63_03' }
+	+/
+	gene 'Pained 1' : pose { '!00_366_303_00_36_00' }
+	gene 'Pained 2' : pose { '?00_303_966_33_03_03' }
+	gene 'Pained 3' : pose { '!30_303_366_36_00_93' }
+	gene 'Pained 4' : pose { '!00_966_303_03_33_93' }
+	
+	gene 'Tired 1' : pose { '?00_603_366_00_00_90' }
+	gene 'Tired 2' : pose { '?00_966_000_03_03_03' }
+	gene 'Tired 3' : pose { '?00_366_303_00_00_93' }
+	gene 'Tired 4' : pose { '?00_003_966_03_03_90' }
+	
+	gene 'Scared 1' : pose { '!30_366_903_33_36_30' }
+	gene 'Scared 2' : pose { '!60_303_966_33_06_03' }
+	gene 'Scared 3' : pose { '!60_903_366_36_33_60' }
+	gene 'Scared 4' : pose { '!60_966_303_06_30_06' }
+	
+	gene 'Anger 1' : pose { '?30_366_903_33_36_30' }
+	gene 'Anger 2' : pose { '?60_303_966_03_06_03' }
+	gene 'Anger 3' : pose { '?60_903_366_36_33_60' }
+	gene 'Anger 4' : pose { '?60_966_303_06_33_06' }
+	gene 'Angry 5' : pose { '249_366_366_06_36_03' }
+	gene 'Angry 6' : pose { 'X49_366_936_06_66_XX' }
+	
+	
+	gene 'Toe Tap 1' : pose { '246_666_366_36_33_33' }
+	gene 'Toe Tap 2' : pose { '246_669_366_36_33_93' }
+	
+	gene 'Swing Arms 1' : pose { 'X36_636_636_36_36_XX' }
+	gene 'Swing Arms 2' : pose { 'X66_636_636_03_00_XX' }
+	
+	gene 'Shiver 1' : pose { 'X00_606_606_66_36_63' }
+	gene 'Shiver 2' : pose { 'X30_606_606_66_66_93' }
+	
+	gene 'Retreat 1' : pose { '?30_033_933_33_00_30' }
+	gene 'Retreat 2' : pose { '?30_636_300_03_33_63' }
+	gene 'Retreat 3' : pose { '?30_933_033_00_33_93' }
+	gene 'Retreat 4' : pose { '?30_300_636_30_03_00' }
+	
+	gene 'Flee 1' : pose { '!46_303_366_66_66_XX' }
+	gene 'Flee 2' : pose { '!46_663_000_66_66_XX' }
+	gene 'Flee 3' : pose { '!46_366_303_66_66_XX' }
+	gene 'Flee 4' : pose { '!36_000_663_66_66_XX' }
+	
+	
+	gene 'Bored 1' : pose { '?60_366_303_00_36_30' }
+	gene 'Bored 2' : pose { '?60_303_966_33_03_03' }
+	gene 'Bored 3' : pose { '?60_303_366_36_00_90' }
+	gene 'Bored 4' : pose { '?60_966_303_03_33_03' }
+	
+	gene 'Throw 1' : pose { '?03_936_936_36_36_XX' }
+	gene 'Throw 2' : pose { '??9_330_330_99_99_XX' }
+	
+	gene 'Kick 1' : pose { '?03_366_300_00_66_XX' }
+	gene 'Kick 2' : pose { '?69_333_999_69_00_XX' }
+	
+	gene 'Drum 1' : pose { '?36_663_663_03_99_XX' }
+	gene 'Drum 2' : pose { '?39_666_666_06_66_XX' }
+	
+	gene 'Sneeze 1' : pose { '299_666_666_33_00_30' }
+	gene 'Sneeze 2' : pose { '236_666_636_33_36_03' }
+	gene 'Sneeze 3' : pose { '?00_696_696_69_66_90' }
+	
+	gene 'Eat 1' : pose { '?36_636_636_66_66_XX' }
+	gene 'Eat 2' : pose { '?66_636_636_36_36_XX' }
+		
+	gene 'Limp 1' : pose { '?00_360_366_03_03_00' }
+	gene 'Limp 2' : pose { '?30_303_366_33_00_63' }
+	gene 'Limp 3' : pose { '?30_993_366_33_00_06' }
+	gene 'Limp 4' : pose { '?00_960_366_03_03_00' }
+	
+	gene 'Stagger 1' : pose { '?00_366_666_33_00_39' }
+	gene 'Stagger 2' : pose { '?30_999_096_69_33_36' }
+	gene 'Stagger 3' : pose { '?00_963_906_69_33_30' }
+	gene 'Stagger 4' : pose { '?00_606_963_69_66_39' }
+	
+	gene 'Downhill 1' : pose { '??0_603_666_03_33_30' }
+	gene 'Downhill 2' : pose { '??0_963_600_00_33_03' }
+	gene 'Downhill 3' : pose { '??0_666_603_00_00_60' }
+	gene 'Downhill 4' : pose { '??0_600_963_30_00_03' }
+	
+	gene 'Uphill 1' : pose { '??0_000_363_30_00_00' }
+	gene 'Uphill 2' : pose { '??0_903_360_00_66_30' }
+	gene 'Uphill 3' : pose { '??0_363_000_00_33_60' }
+	gene 'Uphill 4' : pose { '??0_360_903_00_00_00' }
+	
+	gene 'Run 1' : pose { '?66_696_000_00_36_33' }
+	gene 'Run 2' : pose { '?66_300_696_36_00_93' }
+	gene 'Run 3' : pose { '?66_366_903_33_03_93' }
+	gene 'Run 4' : pose { '?66_906_366_03_00_90' }
+	
+	gene 'Cough 1' : pose { '?69_366_366_00_00_00' }
+	gene 'Cough 2' : pose { '?99_366_366_03_36_00' }
+	gene 'Cough 3' : pose { '?39_366_366_06_69_00' }
+	gene 'Cough 4' : pose { '?69_366_366_06_69_00' }
+	
+	gene 'Pushed 1' : pose { '?39_666_666_00_00_33' }
+	gene 'Pushed 2' : pose { '?99_699_699_06_06_60' }
+	gene 'Pushed 3' : pose { '?36_696_666_06_06_96' }
+	gene 'Pushed 4' : pose { '?39_366_366_33_33_33' }
+	
+	
+	gene 'Lay Egg 1' : pose { 'X36_906_906_36_36_93' }
+	gene 'Lay Egg 2' : pose { 'X93_906_906_69_69_6X' }
+	gene 'Lay Egg 3' : pose { 'X40_906_906_06_06_XX' }
+	gene 'Lay Egg 4' : pose { 'X46_906_906_06_06_30' }
+	
+	gene 'Slap Norn 2' : pose { '?36_366_366_00_03_63' }
+	gene 'Slap Norn 3' : pose { '?33_636_636_00_06_93' }
+	gene 'Slap Norn 4' : pose { '?36_666_666_00_66_60' }
+	gene 'Slap Norn 5' : pose { '?39_666_666_00_99_63' }
+	
+	gene 'Falling 1' : pose { 'X39_999_999_99_99_00' }
+	gene 'Falling 2' : pose { 'X99_933_999_69_69_90' }
+	
+	gene 'Impact 1' : pose { 'X09_999_999_66_66_00' }
+	gene 'Impact 2' : pose { 'X09_930_930_69_69_00' }
+	gene 'Impact 3' : pose { 'X09_906_906_99_99_00' }
+	gene 'Impact 4' : pose { 'X33_906_906_36_36_00' }
+	gene 'Impact 5' : pose { 'X33_366_366_30_30_00' }
+	
+	gene 'Yawn 1' : pose { 'X99_666_666_33_66_00' }
+	gene 'Yawn 2' : pose { 'X46_666_666_33_69_00' }
+	gene 'Yawn 3' : pose { 'X39_666_666_33_69_00' }
+	
+	gene 'Dance 1' : pose { 'X90_600_000_63_69_00' }
+	gene 'Dance 2' : pose { 'X96_330_900_69_99_90' }
+	gene 'Dance 3' : pose { 'X69_363_999_36_00_66' }
+	gene 'Dance 4' : pose { 'X96_900_330_99_69_90' }
+	gene 'Dance 5' : pose { 'X69_999_363_00_36_66' }
+	gene 'Dance 6' : pose { 'X90_000_600_69_63_00' }
+	
+	gene 'Pushed Behind 1' : pose { 'X36_666_666_00_00_33' }
+	gene 'Pushed Behind 2' : pose { 'X30_066_066_03_00_60' }
+	gene 'Pushed Behind 3' : pose { 'X03_333_633_66_66_66' }
+	gene 'Pushed Behind 4' : pose { 'X39_066_033_30_30_99' }
+	
+	gene 'Running 1' : pose { '?60_033_636_36_03_03' }
+	gene 'Running 2' : pose { '?60_036_666_36_00_63' }
+	gene 'Running 3' : pose { '?60_636_033_30_03_03' }
+	gene 'Running 4' : pose { '?60_666_036_33_30_00' }
+	
+	gene 'Sexy 1' : pose { '?36_000_666_30_00_00' }
+	gene 'Sexy 2' : pose { '?36_303_366_03_33_60' }
+	gene 'Sexy 3' : pose { '?36_666_000_00_03_90' }
+	gene 'Sexy 4' : pose { '?36_366_303_00_33_00' }
+	
+	gene 'Vomit 1' : pose { '?00_603_366_36_66_99' }
+	gene 'Vomit 2' : pose { '?00_966_000_66_66_33' }
+	gene 'Vomit 3' : pose { '?00_366_303_69_36_99' }
+	gene 'Vomit 4' : pose { '?00_003_966_66_66_33' }
+	gene 'Vomit 5' : pose { '?00_366_603_66_36_99' }
+	
+	gene 'Creep 1' : pose { '?09_999_000_00_00_00' }
+	gene 'Creep 2' : pose { '?30_966_003_33_33_30' }
+	gene 'Creep 3' : pose { '?09_366_900_00_00_00' }
+	gene 'Creep 4' : pose { '?09_000_999_00_00_00' }
+	gene 'Creep 5' : pose { '?09_900_366_00_00_00' }
+	
+	gene 'Jive 1' : pose { 'XXX_096_600_00_00_00' }
+	gene 'Jive 2' : pose { 'XXX_096_600_00_00_00' }
+	gene 'Jive 3' : pose { 'XXX_696_666_03_06_93' }
+	gene 'Jive 4' : pose { 'XXX_096_600_00_66_00' }
+	gene 'Jive 5' : pose { 'XXX_096_600_00_99_00' }
+	
+	gene 'Teeter 1' : pose { 'X39_366_366_00_00_00' }
+	gene 'Teeter 2' : pose { 'X03_336_336_33_33_00' }
+	gene 'Teeter 3' : pose { 'X00_030_030_33_33_66' }
+	gene 'Teeter 4' : pose { 'X09_030_030_66_66_66' }
+	gene 'Teeter 5' : pose { 'X99_663_663_03_03_66' }
+	
+	gene 'Totter 1' : pose { 'X36_666_666_03_03_66' }
+	gene 'Totter 2' : pose { 'X99_663_663_03_03_66' }
+	gene 'Totter 3' : pose { 'X99_636_636_66_66_66' }
+	gene 'Totter 4' : pose { 'X99_969_969_69_69_66' }
+	
+	@switch_on_stage(Child)
+	gene 'Stand' : pose { '??6_636_366_03_33_30' }
+	
+	@switch_on_stage(Child)
+	gene 'Normal 1' : pose { '??6_603_366_03_33_03' }
+	@switch_on_stage(Child)
+	gene 'Normal 2' : pose { '??6_933_400_03_33_00' }
+	@switch_on_stage(Child)
+	gene 'Normal 3' : pose { '??6_366_603_33_03_33' }
+	@switch_on_stage(Child)
+	gene 'Normal 4' : pose { '??6_400_933_33_00_33' }
+	
+	@switch_on_stage(Child)
+	gene 'Pained 1' : pose { '!03_903_366_69_69_93' }
+	@switch_on_stage(Child)
+	gene 'Pained 2' : pose { '!03_963_000_69_69_3X' }
+	@switch_on_stage(Child)
+	gene 'Pained 3' : pose { '!03_366_903_69_69_93' }
+	@switch_on_stage(Child)
+	gene 'Pained 4' : pose { '!03_000_963_69_69_30' }
+	
+	@switch_on_stage(Child)
+	gene 'Scared 1' : pose { '!00_306_366_99_99_93' }
+	@switch_on_stage(Child)
+	gene 'Scared 2' : pose { '!00_666_003_99_99_9X' }
+	@switch_on_stage(Child)
+	gene 'Scared 3' : pose { '!00_366_306_99_99_93' }
+	@switch_on_stage(Child)
+	gene 'Scared 4' : pose { '!00_003_666_99_99_90' }
+	
+	@switch_on_stage(Child)
+	gene 'Anger 1' : pose { '?36_903_366_00_33_90' }
+	@switch_on_stage(Child)
+	gene 'Anger 2' : pose { '?06_966_000_00_36_09' }
+	@switch_on_stage(Child)
+	gene 'Anger 3' : pose { '?36_366_903_33_00_93' }
+	@switch_on_stage(Child)
+	gene 'Anger 4' : pose { '?36_000_966_36_00_09' }
+	
+	@switch_on_stage(Child)
+	gene 'Shiver 1' : pose { 'X09_666_666_69_69_63' }
+	@switch_on_stage(Child)
+	gene 'Shiver 2' : pose { 'X39_636_636_69_69_93' }
+	
+	@switch_on_stage(Child)
+	gene 'Retreat 1' : pose { '?39_996_000_69_99_90' }
+	@switch_on_stage(Child)
+	gene 'Retreat 2' : pose { '?39_936_366_39_99_30' }
+	@switch_on_stage(Child)
+	gene 'Retreat 3' : pose { '?39_000_996_69_99_03' }
+	@switch_on_stage(Child)
+	gene 'Retreat 4' : pose { '?39_366_936_99_99_30' }
+	
+	@switch_on_stage(Child)
+	gene 'Bored 1' : pose { '?66_603_366_03_33_30' }
+	@switch_on_stage(Child)
+	gene 'Bored 2' : pose { '?66_963_000_00_33_33' }
+	@switch_on_stage(Child)
+	gene 'Bored 3' : pose { '?66_366_603_00_36_03' }
+	@switch_on_stage(Child)
+	gene 'Bored 4' : pose { '?66_000_963_03_00_00' }
+	
+	@switch_on_stage(Child)
+	gene 'Limp 1' : pose { '?03_303_360_03_00_00' }
+	@switch_on_stage(Child)
+	gene 'Limp 2' : pose { '?03_966_303_03_00_00' }
+	@switch_on_stage(Child)
+	gene 'Limp 3' : pose { '?06_630_960_06_03_03' }
+	@switch_on_stage(Child)
+	gene 'Limp 4' : pose { '?03_000_360_00_03_00' }
+	
+	@switch_on_stage(Child)
+	gene 'Running 1' : pose { '?66_666_003_00_36_00' }
+	@switch_on_stage(Child)
+	gene 'Running 2' : pose { '?66_366_306_33_03_93' }
+	@switch_on_stage(Child)
+	gene 'Running 3' : pose { '?66_003_666_36_00_03' }
+	@switch_on_stage(Child)
+	gene 'Running 4' : pose { '?66_306_366_03_00_00' }
+	
+	@switch_on_stage(Child)
+	gene 'Pick Up 1' : pose { '??0_399_399_00_00_00' }
+	@switch_on_stage(Child)
+	gene 'Pick Up 2' : pose { '??3_060_060_03_03_99' }
+	@switch_on_stage(Child)
+	gene 'Pick Up 3' : pose { '??3_360_360_03_03_03' }
+	@switch_on_stage(Child)
+	gene 'Pick Up 4' : pose { '??3_660_660_00_00_00' }
+	
+	@switch_on_stage(Adolescent)
+	gene 'Stagger 1' : pose { '?06_366_603_69_66_39' }
+	@switch_on_stage(Adolescent)
+	gene 'Stagger 2' : pose { '?33_903_366_69_66_36' }
+	@switch_on_stage(Adolescent)
+	gene 'Stagger 3' : pose { '?09_963_000_69_33_30' }
+	@switch_on_stage(Adolescent)
+	gene 'Stagger 4' : pose { '?03_000_963_69_66_39' }
+	
+	@switch_on_stage(Adolescent)
+	gene 'Downhill 1' : pose { '??0_003_360_30_00_93' }
+	@switch_on_stage(Adolescent)
+	gene 'Downhill 2' : pose { '??0_903_360_03_00_93' }
+	@switch_on_stage(Adolescent)
+	gene 'Downhill 3' : pose { '??0_360_003_00_30_93' }
+	@switch_on_stage(Adolescent)
+	gene 'Downhill 4' : pose { '??0_360_903_00_03_00' }
+	
+	@switch_on_stage(Adolescent)
+	gene 'Uphill 1' : pose { '??6_000_363_30_00_00' }
+	@switch_on_stage(Adolescent)
+	gene 'Uphill 2' : pose { '??6_903_360_00_66_30' }
+	@switch_on_stage(Adolescent)
+	gene 'Uphill 3' : pose { '??6_363_000_66_00_60' }
+	@switch_on_stage(Adolescent)
+	gene 'Uphill 4' : pose { '??6_360_903_00_00_00' }
+	
+	@switch_on_stage(Youth)
+	gene 'Pained 1' : pose { '!03_666_003_69_69_00' }
+	@switch_on_stage(Youth)
+	gene 'Pained 2' : pose { '!03_366_306_69_69_90' }
+	@switch_on_stage(Youth)
+	gene 'Pained 3' : pose { '!03_003_666_69_69_30' }
+	@switch_on_stage(Youth)
+	gene 'Pained 4' : pose { '!03_306_366_69_69_00' }
+	
+	@switch_on_stage(Youth)
+	gene 'Anger 1' : pose { '?39_903_366_00_03_90' }
+	@switch_on_stage(Youth)
+	gene 'Anger 2' : pose { '?39_966_000_00_06_09' }
+	@switch_on_stage(Youth)
+	gene 'Anger 3' : pose { '?36_366_903_33_00_93' }
+	@switch_on_stage(Youth)
+	gene 'Anger 4' : pose { '?39_000_966_36_00_09' }
+	
+	@switch_on_stage(Old)
+	gene 'Normal 1' : pose { '??3_363_666_03_03_00' }
+	@switch_on_stage(Old)
+	gene 'Normal 2' : pose { '??3_000_666_03_03_30' }
+	@switch_on_stage(Old)
+	gene 'Normal 3' : pose { '??3_303_063_03_00_93' }
+	@switch_on_stage(Old)
+	gene 'Normal 4' : pose { '??3_666_303_03_00_60' }
+	
+	@switch_on_stage(Old)
+	gene 'Bored 1' : pose { '?06_366_666_00_03_XX' }
+	@switch_on_stage(Old)
+	gene 'Bored 2' : pose { '?06_300_666_03_00_XX' }
+	@switch_on_stage(Old)
+	gene 'Bored 3' : pose { '?06_669_366_03_00_XX' }
+	@switch_on_stage(Old)
+	gene 'Bored 4' : pose { '?06_666_300_00_03_XX' }
+	
+	@switch_on_stage(Old)
+	gene 'Downhill 1' : pose { '??0_603_666_03_33_00' }
+	@switch_on_stage(Old)
+	gene 'Downhill 2' : pose { '??0_963_600_00_33_30' }
+	@switch_on_stage(Old)
+	gene 'Downhill 3' : pose { '??0_666_603_00_00_90' }
+	@switch_on_stage(Old)
+	gene 'Downhill 4' : pose { '??0_600_963_30_00_93' }
+	
+	@switch_on_stage(Old)
+	gene 'Uphill 1' : pose { '??0_000_363_30_00_90' }
+	@switch_on_stage(Old)
+	gene 'Uphill 2' : pose { '??0_903_360_00_66_93' }
+	@switch_on_stage(Old)
+	gene 'Uphill 3' : pose { '??0_363_000_00_33_90' }
+	@switch_on_stage(Old)
+	gene 'Uphill 4' : pose { '??0_360_903_00_00_00' }
+} // +/
+
+/+
+
+chromosome : 'B' {
+	gene 'brain' : organ
+	{
+	//organ's clock adds this number every biotick. 
+		'clock rate'			= 128,
+/+ when the clock exceeds 255, the organ's genes execute, and 255 is subtracted from the clock
+	except for receptors controling the clock rate of this organ, which are executed every tick.
+	
+	All receptors in the creature are executed
+	then all reactions are executed
+	then all emitters are executed
+	
+	creature biochemistry is double buffered, ergo reaction order doesn't matter.
++/
+		vulnerability		= .125,
+		'life force start'	= .5,
+		'biotick start' 		= 13,
+		'atp damage coeff'	= .5,
+	}
+	gene 'digestive' : organ
+	{
+		'clock rate'			= 128,
+		vulnerability		= .125,
+		'life force start'	= .5,
+		'biotick start' 		= 13,
+		'atp damage coeff'	= .5,
+	}
+	gene 'liver anabolic' : organ
+	{
+		'clock rate'			= 128,
+		vulnerability		= .78,
+		'life force start'	= .5,
+		'biotick start' 		= 205,
+		'atp damage coeff'	= .5,
+	}
+	gene 'liver catabolic' : organ
+	{
+		'clock rate'			= 128,
+		vulnerability		= .78,
+		'life force start'	= .5,
+		'biotick start' 		= 147,
+		'atp damage coeff'	= .5,
+	}
+	gene 'mitochondria' : organ
+	{
+		'clock rate'			= 192,
+		vulnerability		= .78,
+		'life force start'	= .5,
+		'biotick start' 		= 41,
+		'atp damage coeff'	= .5,
+	}
+	gene 'regulation' : organ
+	{
+		'clock rate'			= 192,
+		vulnerability		= .78,
+		'life force start'	= .5,
+		'biotick start' 		= 246,
+		'atp damage coeff'	= .5,
+	}
+	gene 'lung' : organ
+	{
+		'clock rate'			= 192,
+		vulnerability		= .78,
+		'life force start'	= .5,
+		'biotick start' 		= 168,
+		'atp damage coeff'	= .5,
+	}
+	gene 'floating' : organ
+	{
+		'clock rate'		= 255,
+		vulnerability 	= .78,
+		'life force start' = .5, 
+		'biotick start'	= 116,
+		'atp damage coeff'	= .5,
+	}
+	gene 'kidney' : organ
+	{
+		'clock rate'		= 255,
+		vulnerability 	= .78,
+		'life force start' = .5, 
+		'biotick start'	= 81,
+		'atp damage coeff'	= .5,
+	}
+	gene 'skin cooling' : organ
+	{
+		'clock rate'		= 255,
+		vulnerability 	= .78,
+		'life force start' = .5, 
+		'biotick start'	= 255,
+		'atp damage coeff'	= .5,
+	}
+	gene 'time line' : organ
+	{
+		'clock rate'		= 128,
+		vulnerability 	= 0,
+		'life force start' = .5, 
+		'biotick start'	= 99,
+		'atp damage coeff'	= .5,
+	}
+	gene 'gonad' : organ
+	{
+		'clock rate'		= 128,
+		vulnerability 	= 0,
+		'life force start' = .5, 
+		'biotick start'	= 119,
+		'atp damage coeff'	= .5,
+	}
+	gene 'fight or flight' : organ
+	{
+		'clock rate'		= 128,
+		vulnerability 	= 0,
+		'life force start' = .5, 
+		'biotick start'	= 128,
+		'atp damage coeff'	= .5,
+	}
+	gene 'drive maintenance' : organ
+	{
+		'clock rate'		= 128,
+		vulnerability 	= 0,
+		'life force start' = .5, 
+		'biotick start'	= 62,
+		'atp damage coeff'	= .5,
+	}
+	gene 'pain overwhelmsion' : organ
+	{
+		'clock rate'		= 128,
+		vulnerability 	= 0,
+		'life force start' = .5, 
+		'biotick start'	= 239,
+		'atp damage coeff'	= .5,
+	}
+	gene 'fear overwhelmsion' : organ
+	{
+		'clock rate'		= 128,
+		vulnerability 	= 0,
+		'life force start' = .5, 
+		'biotick start'	= 94,
+		'atp damage coeff'	= .5,
+	}
+	gene 'stress system' : organ
+	{
+		'clock rate'		= 51,
+		vulnerability 	= 0,
+		'life force start' = .5, 
+		'biotick start'	= 74,
+		'atp damage coeff'	= .5,
+	}
+	gene 'immune system' : organ
+	{
+		'clock rate'		= 128,
+		vulnerability 	= 0,
+		'life force start' = 1.0, 
+		'biotick start'	= 60,
+		'atp damage coeff'	= .5,
+	}
+	gene 'bones' : organ
+	{
+		'clock rate'		= 255,
+		vulnerability 	= 0,
+		'life force start' = 255, 
+		'biotick start'	= 237,
+		'atp damage coeff'	= .5,
+	}
+}
+
+chromosome : 'C' 
+{
+	gene 'digestive' : reaction
+	{
+//reactions may have up to 4 reactants and products
+//if a reaction has 0 reactants it is never exectuted
+//{1 fat, 1 fat} is polynomial in fat, { 2 fat } is linear.
+		reactants = { 1 fat },
+		products  = { 3 triglyceride, 1 cholesterol },
+		rate = 48
+	}
+	gene 'digestive' : reaction
+	{
+		reactants = { 1 starch },
+		products  = { 4 glucose },
+		rate = 56
+	}
+	gene 'digestive' : reaction
+	{
+		reactants = { 1 protein },
+		products  = { 4 'amino acid' },
+		rate = 54
+	}
+	gene 'liver anabolic' : reaction
+	{
+		reactants = { 1 'amino acid', 4 pyruvate },
+		products  = { 1 cholesterol },
+		rate = 48
+	}
+	gene 'liver anabolic' : reaction
+	{
+		reactants = { 1 'anabolic steroid', 4 'amino acid'  },
+		products  = { 1 'muscle tissue' },
+		rate = 65
+	}
+	gene 'liver anabolic' : reaction
+	{
+		reactants = { 6 glucose },
+		products  = { 1 glycogen },
+		rate = 65
+	}
+	gene 'liver anabolic' : reaction
+	{
+		reactants = { 8 pyruvate, 6 ATP },
+		products  = { 1 'fatty acid', 6 ADP  },
+		rate = 65
+	}
+	gene 'liver anabolic' : reaction
+	{
+		reactants = { 2 pyruvate, 2 ATP },
+		products  = { 1 glucose, 2 ADP },
+		rate = 65
+	}
+	gene 'liver anabolic' : reaction
+	{
+		reactants = { 4 'fatty acid' },
+		products = { 1 triglyceride },
+		rate = 65
+	}
+	gene 'liver anabolic' : reaction
+	{
+		reactants = { 8 triglyceride },
+		products  = { 1 'adipose tissue' },
+		rate = 65
+	}
+	gene 'liver catabolic' : reaction
+	{
+		reactants = { 1 cholesterol },
+		products  = { 1 'amino acid', 4 pyruvate },
+		rate = 48
+	}
+	gene 'liver catabolic' : reaction
+	{
+		reactants = { 1 'muscle tissue', 1 protease },
+		products  = { 4 'amino acid' },
+		rate = 48
+	}
+	gene 'liver catabolic' : reaction
+	{
+		reactants = { 1 'muscle tissue' },
+		products  = { 4 'amino acid' },
+		rate = 39
+	}
+	gene 'liver catabolic' : reaction
+	{
+		reactants = { 1 glycogen },
+		products  = { 6 glucose },
+		rate = 39
+	}
+	gene 'liver catabolic' : reaction
+	{
+		reactants = { 1 triglyceride },
+		products  = { 3 'fatty acid' },
+		rate = 39
+	}
+	gene 'liver catabolic' : reaction
+	{
+		reactants = { 1 'adipose tissue' },
+		products  = { 8 triglyceride },
+		rate = 39
+	}
+	gene 'mitochondria' : reaction
+	{
+		reactants = { 1 'fatty acid', 6 ADP  },
+		products = { 8 pyruvate, 6 ATP },
+		rate = 40
+	}
+	gene 'mitochondria' : reaction
+	{
+		reactants = { 1 glucose,  2 ADP  },
+		products = { 2 pyruvate,  2 ATP },
+		rate = 40
+	}
+	gene 'mitochondria' : reaction
+	{
+		reactants = { 1 pyruvate , 3 oxygen },
+		products = { 6 energy  , 3 'dissolved carbon dioxide' },
+		rate = 17
+	}
+	gene 'mitochondria' : reaction
+	{
+		reactants = { 1 energy, 6 ADP },
+		products = { 6 ATP  },
+		rate = 8
+	}
+	gene 'mitochondria' : reaction
+	{
+		reactants = { 2 'amino acid', 1 glucose},
+		products = { 1 ammonia },
+		rate = 47
+	}
+	gene 'regulation' : reaction
+	{
+		reactants = { 1 glycogen, 1 adrenaline },
+		products = { 8 glucose},
+		rate = 38
+	}
+	gene 'regulation' : reaction
+	{
+		reactants = { 1 coldness, 1 hotness},
+		rate = 1
+	}
+	gene 'regulation' : reaction
+	{
+		reactants = { 1 crowded, 1 loneliness },
+		rate = 30
+	}
+	gene 'lung' : reaction
+	{
+		reactants = { 3 'dissolved carbon dioxide' },
+		products = { 1 water },
+		rate = 30
+	}
+	gene 'lung' : reaction
+	{
+		reactants = { 1 water, 4 hotness },
+		rate = 32
+	}
+	gene 'lung' : reaction
+	{
+		reactants = { 1 water, 1 air },
+		products = { 3 oxygen },
+		rate = 47
+	}
+	gene 'kidney' : reaction
+	{
+		reactants = { 1 urea, 1 pistle},
+		rate = 48
+	}
+	gene 'kidney' : reaction
+	{
+		reactants = { 1 water, 1 pistle},
+		products = { 3 coldness, 1 pistle},
+		rate = 48
+	}
+	gene 'kidney' : reaction
+	{
+		reactants = { 2 ammonia, 1 'dissolved carbon dioxide'},
+		products = { 1 urea, 1 water},
+		rate = 32
+	}
+	gene 'skin cooling' : reaction
+	{
+		reactants = { 2 water, 4 hotness },
+		rate = 48
+	}
+
+	@switch_on_stage(youth)
+	gene 'gonad' : reaction
+	{
+		reactants = { 1 'arousal potential', 1 'opposite sex pheromone' },
+		products  = { 1 'sex drive'  },
+		rate = 13
+	}
+
+	@switch_on_stage(youth)
+	gene 'gonad' : reaction
+	{
+		reactants = { 1 'libido lowerer',  1 'sex drive' },
+		products = { 1 'libido lowerer' },
+		rate = 1
+	}
+
+	@switch_on_stage(youth)
+	gene 'gonad' : reaction
+	{
+		reactants = { 1 'arousal potential', 1 'libido lowerer' },
+		rate = 23
+	}
+
+	@switch_on_stage(youth)
+	gene 'gonad' : reaction
+	{
+		reactants = { 1 'sex drive' },
+		rate = 23
+	}
+
+	@switch_on_stage(youth)
+	gene 'gonad' : reaction
+	{
+		reactants = { 1 'libido lowerer', 1 'arousal potential' },
+		products = { 1 'libido lowerer' },
+		rate = 18
+	}
+
+	@switch_on_stage(youth)
+	gene 'gonad' : reaction
+	{
+		reactants = { 1 oestrogen, 1 progesterone  },
+		products = { 1 progesterone },
+		rate = 1
+	}
+
+	@switch_on_stage(adolescent)
+	gene 'fight or flight' : reaction
+	{
+		reactants = { 1 fear,  1 adrenaline },
+		products = { 2 fear, 1 adrenaline },
+		rate = 41
+	}
+
+	@switch_on_stage(adolescent)
+	gene 'fight or flight' : reaction
+	{
+		reactants = { 1 anger, 1 adrenaline },
+		products = { 2 anger, 1 adrenaline },
+		rate = 41
+	}
+
+	gene 'fight or flight' : reaction
+	{
+		reactants = { 1 fear },
+		products = { 1 anger },
+		rate = 46
+	}
+	gene 'fight or flight' : reaction
+	{
+		reactants = { 1 anger },
+		products = { 1 fear },
+		rate = 46
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'pain backup' },
+		products = { 1 pain  },
+		rate = 58
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'hunger for protein backup' },
+		products = { 1 'hunger for protein'  },
+		rate = 58
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'hunger for carb backup' },
+		products = { 1 'hunger for carbohydrate'  },
+		rate = 58
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'hunger for fat backup' },
+		products = { 1 'hunger for fat'  },
+		rate = 58
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'coldness backup' },
+		products = { 1 coldness  },
+		rate = 58
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'hotness backup' },
+		products = { 1 hotness  },
+		rate = 58
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'tiredness backup' },
+		products = { 1 tiredness  },
+		rate = 58
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'sleepiness backup' },
+		products = { 1 tiredness,  1 'sleepiness backup' },
+		rate = 63
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'sleepiness backup', 1 sleepase },
+		products = { 1 sleepiness, 1 sleepase },
+		rate = 7
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 sleepiness },
+		products = { 1 'sleepiness backup'},
+		rate = 24
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'loneliness backup' },
+		products = { 1 loneliness  },
+		rate = 58
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'crowded backup' },
+		products = { 1 crowded  },
+		rate = 58
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'boredom backup' },
+		products = { 1 boredom  },
+		rate = 58
+	}
+	gene 'drive maintenance' : reaction
+	{
+		reactants = { 1 'sex drive backup' },
+		products = { 1 'sex drive'  },
+		rate = 58
+	}
+	gene 'pain overwhelmsion' : reaction
+	{
+		reactants = { 1 'hunger for protein' },
+		products = { 1 'hunger for protein backup' },
+		rate = 18
+	}
+	gene 'pain overwhelmsion' : reaction
+	{
+		reactants = { 1 'hunger for carbohydrate' },
+		products = { 1 'hunger for carb backup' },
+		rate = 18
+	}
+	gene 'pain overwhelmsion' : reaction
+	{
+		reactants = { 1 'hunger for fat' },
+		products = { 1 'hunger for fat backup' },
+		rate = 18
+	}
+	gene 'pain overwhelmsion' : reaction
+	{
+		reactants = { 1 coldness },
+		products = { 1 'coldness backup' },
+		rate = 18
+	}
+	gene 'pain overwhelmsion' : reaction
+	{
+		reactants = { 1 hotness },
+		products = { 1 'hotness backup'},
+		rate = 18
+	}
+	gene 'pain overwhelmsion' : reaction
+	{
+		reactants = { 1 tiredness },
+		products = { 1 'tiredness backup'},
+		rate = 18
+	}
+	gene 'pain overwhelmsion' : reaction
+	{
+		reactants = { 1 loneliness },
+		products = { 1 'loneliness backup'},
+		rate = 18
+	}
+	gene 'pain overwhelmsion' : reaction
+	{
+		reactants = { 1 crowded },
+		products = { 1 'crowded backup'},
+		rate = 18
+	}
+	gene 'pain overwhelmsion' : reaction
+	{
+		reactants = { 1 boredom },
+		products = { 1 'boredom backup'},
+		rate = 18
+	}
+	gene 'pain overwhelmsion' : reaction
+	{
+		reactants = { 1 'sex drive' },
+		products = { 1 'sex drive backup'},
+		rate = 18
+	}
+	gene 'fear overwhelmsion' : reaction
+	{
+		reactants = { 1 'hunger for protein' },
+		products = { 1 'hunger for protein backup'},
+		rate = 18
+	}
+	gene 'fear overwhelmsion' : reaction
+	{
+		reactants = { 1 'hunger for carbohydrate' },
+		products = { 1 'hunger for carb backup'},
+		rate = 18
+	}
+	gene 'fear overwhelmsion' : reaction
+	{
+		reactants = { 1 'hunger for fat' },
+		products = { 1 'hunger for fat backup'},
+		rate = 18
+	}
+	gene 'fear overwhelmsion' : reaction
+	{
+		reactants = { 1 coldness },
+		products = { 1 'coldness backup'},
+		rate = 18
+	}
+	gene 'fear overwhelmsion' : reaction
+	{
+		reactants = { 1 hotness },
+		products = { 1 'hotness backup'},
+		rate = 18
+	}
+	gene 'fear overwhelmsion' : reaction
+	{
+		reactants = { 1 tiredness },
+		products = { 1 'tiredness backup'},
+		rate = 18
+	}
+	gene 'fear overwhelmsion' : reaction
+	{
+		reactants = { 1 boredom },
+		products = { 1 'boredom backup'},
+		rate = 18
+	}
+	gene 'fear overwhelmsion' : reaction
+	{
+		reactants = { 1 'sex drive' },
+		products = { 1 'sex drive backup'},
+		rate = 18
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'histamine A', 1 'antihistamine'},
+		rate = 23
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'histamine B', 1 'antihistamine' },
+		rate = 23
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 stress, 1 prostaglandin },
+		products = { 1 stress, 1 'fatty acid' },
+		rate = 28
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'anti-oxidant', 1 'carbon monoxide' },
+		rate = 18
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'carbon monoxide', 1 oxygen  },
+		rate = 30
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 4 'fear toxin' },
+		products = { 1 fear },
+		rate = 32
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'fever toxin', 1 water },
+		products = { 8 hotness },
+		rate = 32
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'muscle toxin', 1 water },
+		products = { 1 lactate },
+		rate = 32
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 4 'sleep toxin'},
+		products = { 3 'sleep toxin', 2 sleepiness },
+		rate = 32
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'ATP decoupler', 1 'medicine one' },
+		rate = 7
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'ATP decoupler', 1 ATP},
+		products = { 1 'ATP decoupler', 1 ADP },
+		rate = 11
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 cyanide, 1 energy},
+		products = { 1 cyanide},
+		rate = 9
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 cyanide, 1 'sodium thiosulphite' },
+		rate = 14
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 geddonase, 1 'adipose tissue' },
+		products = { 5 glucose },
+		rate = 32
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 glycotoxin, 1 glycogen },
+		products = { 4 glucose, 4 coldness },
+		rate = 32
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 glycotoxin, 1 arnica },
+		rate = 31
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 alcohol, 1 dehydrogenase },
+		products  = { 1 glucose, 1 pain },
+		rate = 31
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'heavy metals', 1 EDTA},
+		rate = 32
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'antigen 0' },
+		products = { 12 'antibody 0', 1 'histamine B' },
+		rate = 40
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = {1  'antigen 1' },
+		products = { 12 'antibody 1', 1 'histamine A' },
+		rate = 41
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 16 'antigen 2' },
+		products = { 12 'antibody 2', 2 coldness },
+		rate = 42
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 2 'antigen 4' },
+		products = { 3 'antibody 4', 1 hotness },
+		rate = 42
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'antigen 3'},
+		products = { 1 'antibody 3', 2 coldness},
+		rate = 42
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'antigen 5'},
+		products = { 3 'antibody 5', 1 wounded},
+		rate = 48
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'antigen 6'},
+		products = { 3 'antibody 6', 1 hotness},
+		rate = 48
+	}
+	gene 'immune system' : reaction
+	{
+		reactants = { 1 'antigen 7'},
+		products = { 3 'antibody 7', 1 pain },
+		rate = 47
+	}
+	gene 'bones' : reaction
+	{
+		reactants = { 2 prostaglandin },
+		products = { 1 'amino acid',  1 'fatty acid' },
+		rate = 29
+	}
+	gene 'bones' : reaction
+	{
+		reactants = { 1 'amino acid', 1 'fatty acid' },
+		products = { 2 prostaglandin },
+		rate = 31
+	}
+}+/
+
+chromosome : 'U' 
+{
+/+ if a genome contains 2 appearance genes:
+	gene 'head' : appearance { "Pixie" }
+	gene 'head' : appearance { "Emerald" }
+
+	the genes are sorted alphabetically from g0 to gN, the names of the breeds are added together, and the result hashed to get the number K
+	 
+	the gene used is g[K (mod) N]
++/
+
+	gene 'ears' : appearance { "Pixie" } 
+	gene 'head' : appearance { "Pixie" }
+	gene 'hair' : appearance { "Pixie" }
+	gene 'body' : appearance { "Pixie" }
+	gene 'arms' : appearance { "Pixie" }
+	gene 'legs' : appearance { "Pixie" }
+	gene 'tail' : appearance { "Pixie" }
+}
+
+

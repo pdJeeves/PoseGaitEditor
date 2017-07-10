@@ -1,0 +1,67 @@
+
+gene "vision" : lobe
+{
+	size = {40, 1},
+	position = {4, 7},
+	UpdateRule =
+	{
+		MVE eax $input
+		ABS eax 0.f
+		SUB 1 eax
+		CMP $input 0
+		BNE 0 1
+		MVE 0 eax
+		MVE eax $state
+		MVE $v5 $v6
+		ADD $input 1
+		MUL eax .5
+		MVE eax var5
+		CMP $input 0
+		BNE 0 1
+		MVE 0 var5		
+	};
+}
+
+ADD 0 r0 $input
+DST 0 r0 r0
+SUB 1 r0 r0
+CMP 0 $input t1
+BNE $input 0 1
+MVE 0 eax
+MVE eax state
+MVE $v5 $v6
+ADD $input 1
+MUL $eax .5, v5
+BNE $input 0 1
+MVE 0 var5
+
+
+gene "drive" : surface
+{
+	size = {20, 1},
+	Update =
+	{
+		SUB arg0 %output
+		MVE eax  %input
+		MVE arg0 %output
+		ADD %input %state
+		
+		
+		
+	
+	
+	
+	};
+
+};
+
+Move rule =
+{
+	CMP i$0 0
+	BNE 0 1 
+	MVE 0 $0
+	SUB i$v5 i$v6
+	MVE 
+
+
+}

@@ -1,0 +1,320 @@
+gene 'poses' : genus {
+	moniker = '0000-0000-0000-0000',
+	mother  = '0000-0000-0000-0EVE',
+	father  = '0000-0000-0000-ADAM'
+}
+
+chromosome : 'P' {
+	gene 'reach low near' : pose { '??3_199_199_35_35_00' }
+	gene 'reach lowish near' : pose { '??6_399_399_16_16_00' }
+	gene 'reach highish near' : pose { '??6_399_399_93_34_xx' }
+	gene 'reach high near' : pose { '??6_390_390_93_34_xx' }
+	gene 'reach low medium' : pose { '??3_369_369_43_52_xx' }
+	gene 'reach lowish medium' : pose { '??3_569_569_43_54_xx' }
+	gene 'reach highish medium' : pose { '??6_569_565_36_75_xx' }
+	gene 'reach high medium' : pose { '??6_560_560_36_93_xx' }
+	gene 'reach low far' : pose { '??3_369_369_43_52_xx' }
+	gene 'reach lowish far' : pose { '??3_569_569_43_54_xx' }
+	gene 'reach highish far' : pose { '??3_569_569_43_54_xx' }
+	gene 'reach high far' : pose { '??3_569_569_43_54_xx' }
+	gene 'stand' : pose { '??6_366_363_33_03_00' }
+	gene 'normal 1' : pose { '??6_603_366_03_33_03' }
+	gene 'normal 2' : pose { '??6_933_400_03_33_00' }
+	gene 'normal 3' : pose { '??6_366_603_33_03_33' }
+	gene 'normal 4' : pose { '??6_400_933_33_00_33' }
+	gene 'pained 1' : pose { '!00_366_303_00_36_00' }
+	gene 'pained 2' : pose { '?00_303_966_33_03_03' }
+	gene 'pained 3' : pose { '!30_303_366_36_00_93' }
+	gene 'pained 4' : pose { '!00_966_303_03_33_93' }
+	gene 'tired 1' : pose { '?00_603_366_00_00_90' }
+	gene 'tired 2' : pose { '?00_966_000_03_03_03' }
+	gene 'tired 3' : pose { '?00_366_303_00_00_93' }
+	gene 'tired 4' : pose { '?00_003_966_03_03_90' }
+	gene 'scared 1' : pose { '!30_366_903_33_36_30' }
+	gene 'scared 2' : pose { '!60_303_966_33_06_03' }
+	gene 'scared 3' : pose { '!60_903_366_36_33_60' }
+	gene 'scared 4' : pose { '!60_966_303_06_30_06' }
+	gene 'anger 1' : pose { '?30_366_903_33_36_30' }
+	gene 'anger 2' : pose { '?60_303_966_03_06_03' }
+	gene 'anger 3' : pose { '?60_903_366_36_33_60' }
+	gene 'anger 4' : pose { '?60_966_303_06_33_06' }
+	gene 'to camera' : pose { '146_366_366_33_33_xx' }
+	gene 'express general need' : pose { '136_366_903_33_00_xx' }
+	gene 'express pain' : pose { '106_636_636_69_69_xx' }
+	gene 'express hunger' : pose { '140_636_636_06_06_xx' }
+	gene 'express tired' : pose { '143_636_636_33_33_xx' }
+	gene 'express lonely' : pose { '246_666_333_66_69_00' }
+	gene 'express fear' : pose { '146_636_636_69_69_xx' }
+	gene 'toe tap 1' : pose { '246_666_366_36_33_33' }
+	gene 'toe tap 2' : pose { '246_669_366_36_33_93' }
+	gene 'angry 5' : pose { '249_366_366_06_36_03' }
+	gene 'angry 6' : pose { 'x49_366_936_06_66_xx' }
+	gene 'swing arms 1' : pose { 'x36_636_636_36_36_xx' }
+	gene 'swing arms 2' : pose { 'x66_636_636_03_00_xx' }
+	gene 'shiver 1' : pose { 'x00_606_606_66_36_63' }
+	gene 'shiver 2' : pose { 'x30_606_606_66_66_93' }
+	gene 'slap norn 1' : pose { '?36_666_666_03_66_60' }
+	gene 'retreat 1' : pose { '?30_033_933_33_00_30' }
+	gene 'retreat 2' : pose { '?30_636_300_03_33_63' }
+	gene 'retreat 3' : pose { '?30_933_033_00_33_93' }
+	gene 'retreat 4' : pose { '?30_300_636_30_03_00' }
+	gene 'flee 1' : pose { '!46_303_366_66_66_xx' }
+	gene 'flee 2' : pose { '!46_663_000_66_66_xx' }
+	gene 'flee 3' : pose { '!46_366_303_66_66_xx' }
+	gene 'flee 4' : pose { '!36_000_663_66_66_xx' }
+	gene 'rest' : pose { '??0_099_099_55_55_00' }
+	gene 'sleep' : pose { 'x00_906_906_06_36_xx' }
+	gene 'east' : pose { '1?6_365_365_06_06_xx' }
+	gene 'west' : pose { '2?6_365_365_06_06_xx' }
+	gene 'bored 1' : pose { '?60_366_303_00_36_30' }
+	gene 'bored 2' : pose { '?60_303_966_33_03_03' }
+	gene 'bored 3' : pose { '?60_303_366_36_00_90' }
+	gene 'bored 4' : pose { '?60_966_303_03_33_03' }
+	gene 'throw 1' : pose { '?03_936_936_36_36_xx' }
+	gene 'throw 2' : pose { '??9_330_330_99_99_xx' }
+	gene 'kick 1' : pose { '?03_366_300_00_66_xx' }
+	gene 'kick 2' : pose { '?69_333_999_69_00_xx' }
+	gene 'drum 1' : pose { '?36_663_663_03_99_xx' }
+	gene 'drum 2' : pose { '?39_666_666_06_66_xx' }
+	gene 'sneeze 1' : pose { '299_666_666_33_00_30' }
+	gene 'sneeze 2' : pose { '236_666_636_33_36_03' }
+	gene 'eat 1' : pose { '?36_636_636_66_66_xx' }
+	gene 'eat 2' : pose { '?66_636_636_36_36_xx' }
+	gene 'startled' : pose { '?39_003_963_03_39_90' }
+	gene 'kiss' : pose { '?66_330_330_66_66_xx' }
+	gene 'dead' : pose { '?!0_900_900_06_06_00' }
+	gene 'limp 1' : pose { '?00_360_366_03_03_00' }
+	gene 'limp 2' : pose { '?30_303_366_33_00_63' }
+	gene 'limp 3' : pose { '?30_993_366_33_00_06' }
+	gene 'limp 4' : pose { '?00_960_366_03_03_00' }
+	gene 'stagger 1' : pose { '?00_366_666_33_00_39' }
+	gene 'stagger 2' : pose { '?30_999_096_69_33_36' }
+	gene 'stagger 3' : pose { '?00_963_906_69_33_30' }
+	gene 'stagger 4' : pose { '?00_606_963_69_66_39' }
+	gene 'downhill 1' : pose { '??0_603_666_03_33_30' }
+	gene 'downhill 2' : pose { '??0_963_600_00_33_03' }
+	gene 'downhill 3' : pose { '??0_666_603_00_00_60' }
+	gene 'downhill 4' : pose { '??0_600_963_30_00_03' }
+	gene 'uphill 1' : pose { '??0_000_363_30_00_00' }
+	gene 'uphill 2' : pose { '??0_903_360_00_66_30' }
+	gene 'uphill 3' : pose { '??0_363_000_00_33_60' }
+	gene 'uphill 4' : pose { '??0_360_903_00_00_00' }
+	gene 'run 1' : pose { '?66_696_000_00_36_33' }
+	gene 'run 2' : pose { '?66_300_696_36_00_93' }
+	gene 'run 3' : pose { '?66_366_903_33_03_93' }
+	gene 'run 4' : pose { '?66_906_366_03_00_90' }
+	gene 'cough 1' : pose { '?69_366_366_00_00_00' }
+	gene 'cough 2' : pose { '?99_366_366_03_36_00' }
+	gene 'cough 3' : pose { '?39_366_366_06_69_00' }
+	gene 'cough 4' : pose { '?69_366_366_06_69_00' }
+	gene 'pushed 1' : pose { '?39_666_666_00_00_33' }
+	gene 'pushed 2' : pose { '?99_699_699_06_06_60' }
+	gene 'pushed 3' : pose { '?36_696_666_06_06_96' }
+	gene 'pushed 4' : pose { '?39_366_366_33_33_33' }
+	gene 'sneeze 3' : pose { '?00_696_696_69_66_90' }
+	gene 'lay egg 1' : pose { 'x36_906_906_36_36_93' }
+	gene 'lay egg 2' : pose { 'x93_906_906_69_69_6x' }
+	gene 'lay egg 3' : pose { 'x40_906_906_06_06_xx' }
+	gene 'lay egg 4' : pose { 'x46_906_906_06_06_30' }
+	gene 'slap norn 2' : pose { '?36_366_366_00_03_63' }
+	gene 'slap norn 3' : pose { '?33_636_636_00_06_93' }
+	gene 'slap norn 4' : pose { '?36_666_666_00_66_60' }
+	gene 'slap norn 5' : pose { '?39_666_666_00_99_63' }
+	gene 'falling 1' : pose { 'x39_999_999_99_99_00' }
+	gene 'falling 2' : pose { 'x99_933_999_69_69_90' }
+	gene 'impact 1' : pose { 'x09_999_999_66_66_00' }
+	gene 'impact 2' : pose { 'x09_930_930_69_69_00' }
+	gene 'impact 3' : pose { 'x09_906_906_99_99_00' }
+	gene 'impact 4' : pose { 'x33_906_906_36_36_00' }
+	gene 'impact 5' : pose { 'x33_366_366_30_30_00' }
+	gene 'yawn 1' : pose { 'x99_666_666_33_66_00' }
+	gene 'yawn 2' : pose { 'x46_666_666_33_69_00' }
+	gene 'yawn 3' : pose { 'x39_666_666_33_69_00' }
+	gene 'dance 1' : pose { 'x90_600_000_63_69_00' }
+	gene 'dance 2' : pose { 'x96_330_900_69_99_90' }
+	gene 'dance 3' : pose { 'x69_363_999_36_00_66' }
+	gene 'dance 4' : pose { 'x96_900_330_99_69_90' }
+	gene 'dance 5' : pose { 'x69_999_363_00_36_66' }
+	gene 'dance 6' : pose { 'x90_000_600_69_63_00' }
+	gene 'pushed behind 1' : pose { 'x36_666_666_00_00_33' }
+	gene 'pushed behind 2' : pose { 'x30_066_066_03_00_60' }
+	gene 'pushed behind 3' : pose { 'x03_333_633_66_66_66' }
+	gene 'pushed behind 4' : pose { 'x39_066_033_30_30_99' }
+	gene 'running 1' : pose { '?60_033_636_36_03_03' }
+	gene 'running 2' : pose { '?60_036_666_36_00_63' }
+	gene 'running 3' : pose { '?60_636_033_30_03_03' }
+	gene 'running 4' : pose { '?60_666_036_33_30_00' }
+	gene 'sexy 1' : pose { '?36_000_666_30_00_00' }
+	gene 'sexy 2' : pose { '?36_303_366_03_33_60' }
+	gene 'sexy 3' : pose { '?36_666_000_00_03_90' }
+	gene 'sexy 4' : pose { '?36_366_303_00_33_00' }
+	gene 'vomit 1' : pose { '?00_603_366_36_66_99' }
+	gene 'vomit 2' : pose { '?00_966_000_66_66_33' }
+	gene 'vomit 3' : pose { '?00_366_303_69_36_99' }
+	gene 'vomit 4' : pose { '?00_003_966_66_66_33' }
+	gene 'pick up 1' : pose { '??0_399_399_00_00_00' }
+	gene 'pick up 2' : pose { '??3_060_060_03_03_99' }
+	gene 'pick up 3' : pose { '??3_360_360_03_03_03' }
+	gene 'pick up 4' : pose { '??3_660_660_00_00_00' }
+	gene 'creep 1' : pose { '?09_999_000_00_00_00' }
+	gene 'creep 2' : pose { '?30_966_003_33_33_30' }
+	gene 'creep 3' : pose { '?09_366_900_00_00_00' }
+	gene 'creep 4' : pose { '?09_000_999_00_00_00' }
+	gene 'creep 5' : pose { '?09_900_366_00_00_00' }
+	gene 'jive 1' : pose { 'xxx_096_600_00_00_00' }
+	gene 'jive 2' : pose { 'xxx_096_600_00_00_00' }
+	gene 'jive 3' : pose { 'xxx_696_666_03_06_93' }
+	gene 'jive 4' : pose { 'xxx_096_600_00_66_00' }
+	gene 'jive 5' : pose { 'xxx_096_600_00_99_00' }
+	gene 'vomit 5' : pose { '?00_366_603_66_36_99' }
+	gene 'teeter 1' : pose { 'x39_366_366_00_00_00' }
+	gene 'teeter 2' : pose { 'x03_336_336_33_33_00' }
+	gene 'teeter 3' : pose { 'x00_030_030_33_33_66' }
+	gene 'teeter 4' : pose { 'x09_030_030_66_66_66' }
+	gene 'teeter 5' : pose { 'x99_663_663_03_03_66' }
+	gene 'totter 1' : pose { 'x36_666_666_03_03_66' }
+	gene 'totter 2' : pose { 'x99_663_663_03_03_66' }
+	gene 'totter 3' : pose { 'x99_636_636_66_66_66' }
+	gene 'totter 4' : pose { 'x99_969_969_69_69_66' }
+}
+
+chromosome : 'G' {	gene 'normal' : gait {
+		pose = {
+			'normal 1',
+			'normal 2',
+			'normal 3',
+			'normal 4'
+		}
+	}
+	gene 'pained' : gait {
+		pose = {
+			'pained 1',
+			'pained 2',
+			'pained 3',
+			'pained 4'
+		},
+		beat = 63
+	}
+	gene 'tired' : gait {
+		pose = {
+			'tired 1',
+			'tired 2',
+			'tired 3',
+			'tired 4'
+		}
+	}
+	gene 'sleepy' : gait {
+		pose = {
+			'tired 1',
+			'tired 2',
+			'tired 3',
+			'tired 4'
+		},
+		beat = 63
+	}
+	gene 'scared' : gait {
+		pose = {
+			'scared 1',
+			'scared 2',
+			'scared 3',
+			'scared 4'
+		}
+	}
+	gene 'anger' : gait {
+		pose = {
+			'anger 1',
+			'anger 2'
+		},
+		invert
+	}
+	gene 'limp' : gait {
+		pose = {
+			'limp 1',
+			'limp 2',
+			'limp 3',
+			'limp 4'
+		}
+	}
+	gene 'stagger' : gait {
+		pose = {
+			'stagger 1',
+			'stagger 1',
+			'stagger 2',
+			'stagger 3',
+			'stagger 1',
+			'stagger 4',
+			'stagger 2',
+			'stagger 3'
+		}
+	}
+	gene 'downhill' : gait {
+		pose = {
+			'downhill 1',
+			'downhill 2',
+			'downhill 3',
+			'downhill 4'
+		}
+	}
+	gene 'retreat' : gait {
+		pose = {
+			'retreat 1',
+			'retreat 2',
+			'retreat 3',
+			'retreat 4'
+		}
+	}
+	gene 'uphill' : gait {
+		pose = {
+			'uphill 1',
+			'uphill 2',
+			'uphill 3',
+			'uphill 4'
+		}
+	}
+	gene 'bored' : gait {
+		pose = {
+			'bored 1',
+			'bored 2',
+			'bored 3',
+			'bored 4'
+		}
+	}
+	gene 'running' : gait {
+		pose = {
+			'running 1',
+			'running 2',
+			'running 3',
+			'running 4'
+		}
+	}
+	gene 'sexy' : gait {
+		pose = {
+			'sexy 1',
+			'sexy 2',
+			'sexy 3',
+			'sexy 4'
+		}
+	}
+	gene 'dance' : gait {
+		pose = {
+			'normal 1',
+			'normal 2',
+			'normal 3',
+			'normal 4',
+			'toe tap 1',
+			'toe tap 2',
+			'toe tap 1',
+			'toe tap 2'
+		}
+	}
+}
+
+chromosome : 'A' {
+	gene 'ears' : appearance { 'Pixie' }
+	gene 'head' : appearance { 'Pixie' }
+	gene 'hair' : appearance { 'Pixie' }
+	gene 'body' : appearance { 'Pixie' }
+	gene 'arms' : appearance { 'Pixie' }
+	gene 'legs' : appearance { 'Pixie' }
+	gene 'tail' : appearance { 'Pixie' }
+}
