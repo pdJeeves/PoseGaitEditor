@@ -10,6 +10,7 @@
 #include <QComboBox>
 #include <cctype>
 #include <QMessageBox>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
 QMainWindow(parent),
@@ -261,7 +262,8 @@ void MainWindow::documentOpen()
 	if(filename.isNull())
 		return;
 
-	m_skell.loadGenome(filename.toStdString());
+
+    m_skell.loadGenome(filename.toStdString());
 	ui->widget->repaint();
 }
 

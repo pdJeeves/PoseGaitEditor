@@ -200,6 +200,7 @@ Sprite * getSprite(uint8_t part, bool gender, uint8_t age, std::string name)
 	}
 
 	Sprite * closest = 0L;
+
 	if(getClosestPart(closest, part, name, gender, age))
 	{
 		return closest;

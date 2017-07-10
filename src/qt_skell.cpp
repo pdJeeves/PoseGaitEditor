@@ -4,6 +4,7 @@
 #include "spritemanager.h"
 #include <cmath>
 #include <QPainter>
+#include <iostream>
 
 Skell::Skell() :
 	_this(0L),
@@ -27,10 +28,10 @@ bool Skell::loadGenome(const std::string & genome)
 		memset(rotation, 0, sizeof(rotation));
 		current_age = 255;
 
-		_this = construct_creature(genomeData);
+        _this = construct_creature(genomeData);
 		m_skell = creature_get_skell(_this);
 		direction = skellGetDirection(m_skell);
-		genomeDestruct(genomeData);
+        genomeDestruct(genomeData);
 		update(0);
 		return true;
 	}
